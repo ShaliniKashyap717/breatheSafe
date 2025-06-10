@@ -17,27 +17,34 @@ While raw air-quality data is widely available, most people still lack **persona
 
 ---
 
-## ✨ Our Solution — **BreatheSafe**
+## ✨ Solution — **BreatheSafe**
 
 **BreatheSafe** is a one-stop platform that transforms real-time pollution data into meaningful health advice and community action.
 
 ### 🌫️ Real-Time Air Quality Monitoring
 - Fetches live AQI for any location via trusted governmental APIs  
-- Provides instant, location-specific pollution alerts
+- Provides instant, location-specific pollution alerts  
+- Automatically updates based on your browser’s GPS or entered location  
 
+### 🤖 AI-Powered Environmental Reports
+- Generates AI-based daily environmental summaries using **Gemini API**  
+- Built with **Langchain.js** and autonomous AI agents  
+  - Notifies local authorities automatically when pollution exceeds dangerous thresholds
+ 
+    
 ### 🧠 Health Risk Prediction & Anomaly Detection
 - ML model blends pollutant levels with personal factors (age, smoking habits, allergies, mask usage, etc.)  
-- Outputs a personalized health-risk score  
-- GenAI layer converts technical results into simple language
+- Outputs a personalized health-risk score with graphs and insights  
+- Detects pollution anomalies and flags high-risk exposure situations  
 
 ### 💌 Personalized Tips & Daily Newsletter
-- Tailored recommendations to reduce exposure and protect your health  
-- Optional email digest so you never miss critical air-quality reports
+- Provides tailored health recommendations based on your profile and exposure  
+- Sends optional daily email digests with AQI updates, weather, and health tips  
 
 ### 👥 Community Engagement
-- Group challenges to improve local environments  
-- Easy reporting of air-quality issues to authorities 🛠️  
-- Discussion forums that foster awareness and collective action
+- Enables users to participate in group challenges (e.g., No-Car Day)  
+- Lets users report air quality issues directly to authorities 🛠️  
+- Hosts forums for environmental discussions and community stories
 
 ---
 
