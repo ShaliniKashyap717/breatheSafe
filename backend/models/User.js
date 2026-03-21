@@ -1,11 +1,18 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  age: { type: Number, required: true },
+  // from Google
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  location: {latitude: Number, longitude: Number,},
+  googleId: { type: String }, 
+  
+  // to be filled later 
+  age: { type: Number }, 
+  isSmoker: { type: Boolean, default: false },
+  hasAsthma: { type: Boolean, default: false },
+  
+  // helper to check if they finished setup
+  isProfileComplete: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("User", UserSchema);

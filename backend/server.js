@@ -8,7 +8,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
+const healthRoutes = require('./routes/healthRoutes');
 
 connectDB();
 initCronJobs();
@@ -25,10 +25,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 3. routes 
+//  routes 
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/reportRoutes'));
 app.use('/api/aqi-insights', require('./routes/geminiRoutes'));
+app.use('/api/health', healthRoutes); 
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server on port ${PORT}`));
