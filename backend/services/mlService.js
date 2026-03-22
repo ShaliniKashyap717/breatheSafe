@@ -1,20 +1,23 @@
 const axios = require('axios');
 require('dotenv').config(); 
 
+/**
+ * connects to python ml service for health risk prediction
+ */
 const getHealthRiskAssessment = async (user, aqiData) => {
   try {
-   
+    // map aqicn data to model input format
     const payload = {
-     
+      // pollutants
       pm2_5: aqiData.iaqi?.pm25?.v || 0,
       pm10: aqiData.iaqi?.pm10?.v || 0,
       no2: aqiData.iaqi?.no2?.v || 0,
-      nox: aqiData.iaqi?.no?.v || 0, 
+      nox: aqiData.iaqi?.no?.v || 0,
       no: aqiData.iaqi?.no?.v || 0,
       at: aqiData.iaqi?.t?.v || 25,
       ozone: aqiData.iaqi?.o3?.v || 0,
       co: aqiData.iaqi?.co?.v || 0,
-      nh3: 0, 
+      nh3: 0,
       so2: aqiData.iaqi?.so2?.v || 0,
       benzene: 0,
       toluene: 0,
@@ -30,21 +33,23 @@ const getHealthRiskAssessment = async (user, aqiData) => {
       bp: aqiData.iaqi?.p?.v || 1013,
       vws: 0,
 
-      // personal Factors
+      // user factors
       age: user.age || 25,
-      mask_type: user.maskType || 0, 
+      mask_type: user.maskType || 0,
       is_smoker: user.isSmoker ? 1 : 0,
       has_asthma: user.hasAsthma ? 1 : 0
     };
 
-   
+    // call ml api
     const response = await axios.post(process.env.ML_SERVICE_URL, payload);
 
-    //  return the full data object {risk_score, status, main_driver, recommendation}
     return response.data.data; 
 
   } catch (error) {
-    console.error("ML Service Error Detail:", error.response?.data || error.message);
+    // log error from ml service
+    const errorDetail = error.response?.data?.detail || error.message;
+    console.error("ML Service Connection Error:", errorDetail);
+    
     return null; 
   }
 };
