@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  // from Google
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  
+  // MANUAL LOGIN: Only exists if they didn't use Google
+  password: { type: String }, 
+  
+  // GOOGLE LOGIN: Only exists if they used Google
   googleId: { type: String }, 
   
-  // to be filled later 
-  age: { type: Number }, 
+  // SHARED HEALTH DATA (Required for ML Model)
+  age: { type: Number, default: 25 }, 
   isSmoker: { type: Boolean, default: false },
   hasAsthma: { type: Boolean, default: false },
-  
-  // helper to check if they finished setup
   isProfileComplete: { type: Boolean, default: false }
 });
-
-module.exports = mongoose.model("User", UserSchema);

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const HealthLog = require('../models/HealthLog');
 const { getHealthRiskAssessment } = require('../services/mlService');
 
@@ -10,6 +11,9 @@ const { getHealthRiskAssessment } = require('../services/mlService');
 router.post('/check', async (req, res) => {
   try {
     const { userId, userData, aqiData, locationName, coordinates } = req.body;
+
+     
+const safeUserId = userId || new mongoose.Types.ObjectId();
 
     // delegate prediction to ml_service 
     const prediction = await getHealthRiskAssessment(userData, aqiData);
@@ -23,7 +27,7 @@ router.post('/check', async (req, res) => {
 
     // map request + prediction into schema
     const newLog = new HealthLog({
-      userId,
+      userId: safeUserId,
       locationName,
       coordinates,
       aqiSnapshot: {

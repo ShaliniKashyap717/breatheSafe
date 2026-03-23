@@ -20,9 +20,10 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
+ 
+return (
+  <UserContext.Provider value={{ currentUser: user, setCurrentUser: setUser, logout }}>
+    {children}
+  </UserContext.Provider>
+);
 };

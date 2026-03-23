@@ -7,12 +7,12 @@ require('dotenv').config();
 const getHealthRiskAssessment = async (user, aqiData) => {
   try {
     // map aqicn data to model input format
+
     const payload = {
-      // pollutants
       pm2_5: aqiData.iaqi?.pm25?.v || 0,
       pm10: aqiData.iaqi?.pm10?.v || 0,
       no2: aqiData.iaqi?.no2?.v || 0,
-      nox: aqiData.iaqi?.no?.v || 0,
+      nox: aqiData.iaqi?.no?.v || 0, 
       no: aqiData.iaqi?.no?.v || 0,
       at: aqiData.iaqi?.t?.v || 25,
       ozone: aqiData.iaqi?.o3?.v || 0,
@@ -22,8 +22,6 @@ const getHealthRiskAssessment = async (user, aqiData) => {
       benzene: 0,
       toluene: 0,
       xylene: 0,
-      
-      // weather
       temp: aqiData.iaqi?.t?.v || 20,
       rh: aqiData.iaqi?.h?.v || 50,
       ws: aqiData.iaqi?.w?.v || 1,
@@ -32,12 +30,10 @@ const getHealthRiskAssessment = async (user, aqiData) => {
       rf: 0,
       bp: aqiData.iaqi?.p?.v || 1013,
       vws: 0,
-
-      // user factors
       age: user.age || 25,
-      mask_type: user.maskType || 0,
-      is_smoker: user.isSmoker ? 1 : 0,
-      has_asthma: user.hasAsthma ? 1 : 0
+      mask_type: user.mask_type || 0,
+      is_smoker: user.is_smoker ? 1 : 0,
+      has_asthma: user.has_asthma ? 1 : 0
     };
 
     // call ml api

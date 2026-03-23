@@ -1,8 +1,9 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react'; 
+import { UserContext } from '../context/UserContext'; 
 import AQICard from './AQICard';
 import PollutantCard from './PollutantCard';
 import HealthRecommendations from './HealthRecommendations';
+import PersonalizedHealthAdvisor from './PersonalizedHealthAdvisor';
 import AQITrendsChart from './AQITrendsChart';
 import WeatherCorrelation from './WeatherCorrelation';
 import { Wind, Thermometer, Droplets, Eye, Activity, TrendingUp, MapPin } from 'lucide-react';
@@ -10,14 +11,12 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import L from 'leaflet';
-// delete L.Icon.Default.prototype._getIconUrl;
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-//   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-//   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-// });
+
 
 const Dashboard = () => {
+
+  const { currentUser } = useContext(UserContext);
+
   const [currentData, setCurrentData] = useState({
     aqi: 0,
     location: "",
@@ -35,7 +34,7 @@ const Dashboard = () => {
     lastUpdated: new Date(),
     coordinates: { lat: 0, lng: 0 }
   });
-
+const [rawAqi, setRawAqi] = useState(null);
   const [locationInput, setLocationInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -44,6 +43,7 @@ const Dashboard = () => {
 
   const API_TOKEN = import.meta.env.VITE_WAQI_API_TOKEN;
   console.log(API_TOKEN)
+
 
   const fetchAirQualityData = async (location) => {
     setLoading(true);
@@ -72,6 +72,8 @@ const Dashboard = () => {
       
       if (data.status === 'ok' && data.data) {
         const aqiData = data.data;
+
+      setRawAqi(aqiData); 
         
         const pollutants = {
           pm25: aqiData.iaqi?.pm25?.v || 0,
@@ -248,10 +250,25 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Main AQI Display */}
-            <div className="mb-8 animate-scale-in">
-              <AQICard aqi={currentData.aqi} location={currentData.location} />
-            </div>
+          {/* Main AQI Display */}
+<div className="mb-8 animate-scale-in">
+  <AQICard aqi={currentData.aqi} location={currentData.location} />
+</div>
+
+{/* ML PERSOANLIZED ANALYSIS CARD */}
+<div className="mb-8">
+   {console.log("Dashboard state check:", { hasData, currentUser, currentData })}
+   {
+   hasData && currentUser &&(
+<PersonalizedHealthAdvisor 
+  aqiData={rawAqi} // Pass the raw data from the API
+  user={currentUser}  
+/>
+    )
+   }
+ 
+</div>
+
 
             {/* Map Section */}
             {currentData.coordinates.lat !== 0 && currentData.coordinates.lng !== 0 && (
