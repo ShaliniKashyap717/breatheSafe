@@ -2,6 +2,9 @@
 
 ### Breathe Better with BreatheSafe | Combating Air Pollution With Personalized Health Insights
 
+BreatheSafe is a comprehensive microservices-based platform designed to transform raw environmental data into personalized, actionable health insights. By integrating real-time AQI monitoring with an Ensemble Machine Learning model, the system predicts individual health risks based on personal biological factors and environmental exposure.
+
+
 ---
 
 ## 🌍 Problem Statement
@@ -17,38 +20,49 @@ While raw air-quality data is widely available, most people still lack **persona
 
 ---
 
-## ✨ Solution — **BreatheSafe**
-
-**BreatheSafe** is a one-stop platform that transforms real-time pollution data into meaningful health advice and community action.
-
-### 🌫️ Real-Time Air Quality Monitoring
-- Fetches live AQI for any location via trusted governmental APIs  
-- Provides instant, location-specific pollution alerts  
-- Automatically updates based on your browser’s GPS or entered location  
-
-### 🤖 AI-Powered Environmental Reports
-- Generates AI-based daily environmental summaries using **Gemini API**  
-- Built with **Langchain.js** and autonomous AI agents  
-  - Notifies local authorities automatically when pollution exceeds dangerous thresholds
- 
-    
-### 🧠 Health Risk Prediction & Anomaly Detection
-- ML model blends pollutant levels with personal factors (age, smoking habits, allergies, mask usage, etc.)  
-- Outputs a personalized health-risk score with graphs and insights  
-- Detects pollution anomalies and flags high-risk exposure situations  
-
-### 💌 Personalized Tips & Daily Newsletter
-- Provides tailored health recommendations based on your profile and exposure  
-- Sends optional daily email digests with AQI updates, weather, and health tips  
-
-### 👥 Community Engagement
-- Enables users to participate in group challenges (e.g., No-Car Day)  
-- Lets users report air quality issues directly to authorities 🛠️  
-- Hosts forums for environmental discussions and community stories
-
----
 
 
+
+
+
+## 🏗️ System Architecture
+
+The application follows a microservices architecture to ensure scalability and separation of concerns between the data processing, user management, and machine learning layers.
+
+```mermaid
+graph TD
+    subgraph Frontend [Client Layer - React.js]
+        UI[Dashboard & Community UI]
+        UC[User Context / Auth]
+    end
+
+    subgraph Backend [Logic Layer - Node.js & Express]
+        API[Gateway API]
+        Auth[JWT / Google OAuth]
+        Mail[Nodemailer / Email Service]
+        DB[(MongoDB - Users & HealthLogs)]
+    end
+
+    subgraph ML_Service [Intelligence Layer - Python FastAPI]
+        PR[Predictor Engine]
+        EN[Ensemble Model - XGBoost/CatBoost]
+        SHAP[SHAP Explainer]
+    end
+
+    subgraph External_APIs [Data Providers]
+        WAQI[WAQI / AQICN API]
+        Gemini[Google Gemini AI]
+    end
+
+    UI --> API
+    API --> DB
+    API --> Mail
+    API --> ML_Service
+    ML_Service --> EN
+    EN --> SHAP
+    API --> Gemini
+    UI --> WAQI
+```
 
 ## 🔧 Tech Stack
 
@@ -60,8 +74,6 @@ While raw air-quality data is widely available, most people still lack **persona
 
 ---
 
-
-_Ready to breathe easy? Join us and make clean air a reality for everyone._
 
 ##  ⭐ Feature Highlights
 
